@@ -1,0 +1,64 @@
+<div class="header-section">
+  <div>
+    <h2>Listado de Tickets de Soporte</h2>
+    <p class="subtitle">Gestion centralizada de solicitudes de atencion tecnica</p>
+  </div>
+  <a routerLink="/tickets/nuevo" class="btn btn-primary">+ Crear Ticket</a>
+</div>
+
+<!-- Alerta de Error -->
+<div *ngIf="mensajeError" class="alert alert-error">
+  <p>{{ mensajeError }}</p>
+  <button (click)="obtenerTickets()" class="btn btn-retry">Reintentar</button>
+</div>
+
+<!-- Indicador de Carga -->
+<div *ngIf="cargando" class="loading-box">
+  <p>Cargando tickets desde el servidor...</p>
+</div>
+
+<!-- Estado Vacio -->
+<div *ngIf="!cargando && !mensajeError && tickets.length === 0" class="empty-box">
+  <p>No hay tickets registrados en el sistema actualmente.</p>
+</div>
+
+<!-- Tabla de Tickets -->
+<div *ngIf="!cargando && !mensajeError && tickets.length > 0" class="table-container">
+  <table class="tickets-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Asunto</th>
+        <th>Solicitante</th>
+        <th>Categoria</th>
+        <th>Prioridad</th>
+        <th>Estado</th>
+        <th>Fecha Registro</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let ticket of tickets">
+        <td><strong>#{{ ticket.id }}</strong></td>
+        <td>{{ ticket.asunto }}</td>
+        <td>{{ ticket.solicitante }}</td>
+        <td>{{ ticket.categoria }}</td>
+        <td>
+          <span class="badge" [ngClass]="obtenerClasePrioridad(ticket.prioridad)">
+            {{ ticket.prioridad }}
+          </span>
+        </td>
+        <td>
+          <span class="badge" [ngClass]="obtenerClaseEstado(ticket.estado)">
+            {{ ticket.estado }}
+          </span>
+        </td>
+        <td>{{ ticket.fechaRegistro | date:'short' }}</td>
+        <td class="actions-cell">
+          <a [routerLink]="['/tickets/editar', ticket.id]" class="btn-action btn-edit">Editar</a>
+          <button (click)="confirmarEliminacion(ticket.id)" class="btn-action btn-delete">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

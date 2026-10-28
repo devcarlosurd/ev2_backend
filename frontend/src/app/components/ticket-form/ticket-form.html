@@ -1,0 +1,84 @@
+<div class="form-container">
+  <div class="form-header">
+    <h2>{{ modoEdicion ? 'Editar Ticket #' + ticketId : 'Registrar Nuevo Ticket' }}</h2>
+    <p class="subtitle">Complete los campos requeridos para {{ modoEdicion ? 'actualizar' : 'ingresar' }} la solicitud</p>
+  </div>
+
+  <div *ngIf="mensajeError" class="alert alert-error">
+    {{ mensajeError }}
+  </div>
+
+  <form [formGroup]="ticketForm" (ngSubmit)="guardar()" class="form-body">
+    <div class="form-group">
+      <label for="asunto">Asunto / Resumen *</label>
+      <input 
+        id="asunto" 
+        type="text" 
+        formControlName="asunto" 
+        placeholder="Ej: Falla de conexion a internet"
+        [class.input-error]="campoInvalido('asunto')"
+      />
+      <span *ngIf="campoInvalido('asunto')" class="error-text">
+        El asunto es obligatorio (minimo 5 caracteres).
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label for="solicitante">Solicitante *</label>
+      <input 
+        id="solicitante" 
+        type="text" 
+        formControlName="solicitante" 
+        placeholder="Nombre y apellido de quien solicita"
+        [class.input-error]="campoInvalido('solicitante')"
+      />
+      <span *ngIf="campoInvalido('solicitante')" class="error-text">
+        El solicitante es obligatorio (minimo 3 caracteres).
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label for="descripcion">Descripcion del Problema *</label>
+      <textarea 
+        id="descripcion" 
+        rows="4" 
+        formControlName="descripcion" 
+        placeholder="Detalle de forma clara el inconveniente presentado..."
+        [class.input-error]="campoInvalido('descripcion')"
+      ></textarea>
+      <span *ngIf="campoInvalido('descripcion')" class="error-text">
+        La descripcion es obligatoria (minimo 10 caracteres).
+      </span>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col">
+        <label for="categoria">Categoria</label>
+        <select id="categoria" formControlName="categoria">
+          <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+      <div class="form-group col">
+        <label for="prioridad">Prioridad</label>
+        <select id="prioridad" formControlName="prioridad">
+          <option *ngFor="let prio of prioridades" [value]="prio">{{ prio }}</option>
+        </select>
+      </div>
+
+      <div class="form-group col">
+        <label for="estado">Estado</label>
+        <select id="estado" formControlName="estado">
+          <option *ngFor="let est of estados" [value]="est">{{ est }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a routerLink="/tickets" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary" [disabled]="guardando">
+        {{ guardando ? 'Guardando...' : (modoEdicion ? 'Actualizar Ticket' : 'Crear Ticket') }}
+      </button>
+    </div>
+  </form>
+</div>
