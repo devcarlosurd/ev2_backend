@@ -1,0 +1,14 @@
+# Dependencias
+node_modules/
+.angular/
+dist/
+
+# Variables de entorno sensibles
+.env
+
+# Archivos de sistema / IDE
+.vscode/
+.idea/
+Thumbs.db
+# Documentos
+*.docx
