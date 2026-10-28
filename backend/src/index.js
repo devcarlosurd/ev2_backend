@@ -11,6 +11,11 @@ const PORT = process.env.PORT || 3000;
 app.use(cors()); // Permite peticiones desde Angular (localhost:4200)
 app.use(express.json()); // Permite a Express entender JSON en req.body
 
+// Endpoint de comprobacion de estado del servicio
+app.get('/api/health', (req, res) => {
+    res.json({ estado: 'activo', servicio: 'API REST Soporte Tecnico' });
+});
+
 // 1. GET /api/tickets -> Listar todos los tickets
 app.get('/api/tickets', async (req, res) => {
     try {
